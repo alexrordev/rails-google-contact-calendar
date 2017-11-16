@@ -12,10 +12,11 @@
     <table class='table table-striped'>
 
       <tr>
-        <th class="text-center">Name</th class="text-center">
+        <th class="text-center">Name</th>
         <th class="text-center">Date</th>
         <th class="text-center">Creator</th>
         <th class="text-center">Calendar</th>
+        <th class="text-center">Attendees</th>
         <th class="text-center">link</th>
       </tr>
 
@@ -25,6 +26,7 @@
           <td><%= event.start %></td>
           <td><%= event.creator %></td>
           <td><%= event.calendar %></td>
+          <td><%= event.attendees.join(',  ') if event.attendees.present? %></td>
           <td><%= link_to "#{event.name.first(10)}...", event.link %></td>
         </tr>
       <% end %>

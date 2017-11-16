@@ -1,8 +1,7 @@
-require "open-uri"
+require 'open-uri'
+require 'cgi'
 
 class User < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
@@ -17,7 +16,6 @@ class User < ActiveRecord::Base
       user = User.where(:email => data["email"]).first
 
 
-      # Uncomment the section below if you want users to be created if they don't exist
       unless user
        user = User.create(
           first_name: data["first_name"],
@@ -68,12 +66,14 @@ class User < ActiveRecord::Base
   end
 
   def get_events_for_calendar(cal)
-
-    url = "https://www.googleapis.com/calendar/v3/calendars/#{cal["id"]}/events?access_token=#{token}"
+    begin
+    url      = "https://www.googleapis.com/calendar/v3/calendars/#{cal["id"]}/events?access_token=#{token}"
     response = open(url)
+    rescue OpenURI::HTTPError => error
+      puts error
+    else
     json = JSON.parse(response.read)
     my_events = json["items"]
-
     my_events.each do |event|
       name = event["summary"] || "no name"
       creator = event["creator"] ? event["creator"]["email"] : nil
@@ -81,15 +81,17 @@ class User < ActiveRecord::Base
       status = event["status"] || nil
       link = event["htmlLink"] || nil
       calendar = cal["summary"] || nil
+      attendees = event["attendees"].map{|e|e["displayName"]} if event["attendees"].present? || nil
 
       events.create(name: name,
                     creator: creator,
                     status: status,
                     start: start,
                     link: link,
-                    calendar: calendar
+                    calendar: calendar,
+                    attendees: attendees
                     )
     end
+    end
   end
-
 end

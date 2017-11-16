@@ -23,7 +23,7 @@ Devise.setup do |config|
   require 'devise/orm/active_record'
 
   config.omniauth :google_oauth2, ENV["GOOGLE_ID"], ENV["GOOGLE_SECRET"], {
-    scope: "https://www.googleapis.com/auth/userinfo.email,https://www.googleapis.com/auth/userinfo.profile,http://www.google.com/calendar/feeds,http://www.google.com/m8/feeds"
+    scope: "https://www.googleapis.com/auth/userinfo.email,https://www.googleapis.com/auth/userinfo.profile,https://www.googleapis.com/auth/calendar,https://www.googleapis.com/auth/contacts"
   }
 
   # ==> Configuration for any authentication mechanism
