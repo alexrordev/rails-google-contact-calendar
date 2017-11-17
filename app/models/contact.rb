@@ -1,4 +1,4 @@
 class Contact < ActiveRecord::Base
-  belongs_to :user
-  validates :email, uniqueness: true
+  belongs_to  :user, dependent: :destroy
+  validates   :email, uniqueness: true
 end

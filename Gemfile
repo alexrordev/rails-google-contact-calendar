@@ -15,6 +15,7 @@ gem 'devise'
 gem 'omniauth-google-oauth2'
 gem 'figaro', '~> 1.0.0.rc1'
 gem 'heroku'
+gem 'google-api-client'
 
 group :development do
   gem 'better_errors'
